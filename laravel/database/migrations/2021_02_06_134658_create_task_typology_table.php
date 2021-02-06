@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmployeesTable extends Migration
+class CreateTaskTypologyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateEmployeesTable extends Migration
      */
     public function up()
     {
-      Schema::create('employees', function (Blueprint $table) {
+      Schema::create('task_typology', function (Blueprint $table) {
 
-            $table->id();
+        $table -> id();
 
-            $table->string('name',100);
-            $table->string('lastname',100);
-            $table->date('dateOfBirth');
+        $table -> bigInteger('task_id')     -> unsigned();
+        $table -> bigInteger('typology_id') -> unsigned();
 
-            $table->timestamps();
+        $table -> timestamps();
 
-        });
+      });
     }
 
     /**
@@ -33,6 +32,6 @@ class CreateEmployeesTable extends Migration
      */
     public function down()
     {
-      Schema::dropIfExists('employees');
+      Schema::dropIfExists('task_typology');
     }
 }

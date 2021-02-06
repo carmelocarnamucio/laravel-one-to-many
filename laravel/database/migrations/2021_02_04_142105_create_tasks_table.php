@@ -13,18 +13,17 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+      Schema::create('tasks', function (Blueprint $table) {
 
-            $table -> id();
+          $table -> id();
 
-            $table -> string('title');
-            $table -> text('description');
-            $table -> tinyInteger('priority') -> unsigned();
+          $table -> string('title',100);
+          $table -> text('description');
+          $table -> tinyInteger('priority')  -> unsigned();
+          $table -> bigInteger('employee_id')-> unsigned();
 
-            $table -> bigInteger('employee_id') -> unsigned();
-
-            $table -> timestamps();
-
+          $table -> timestamps();
+          
         });
     }
 
@@ -35,6 +34,6 @@ class CreateTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+      Schema::dropIfExists('tasks');
     }
 }

@@ -10,13 +10,13 @@ class Employee extends Model
 
       'name',
       'lastname',
-      'date',
+      'dateOfBirth',
 
     ];
 
     public function tasks(){
 
       return $this -> hasMany(Task::class);
-      
+
     }
 }

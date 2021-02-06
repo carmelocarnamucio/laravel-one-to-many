@@ -1,26 +1,28 @@
+
 @extends('layouts.main-layout')
 
 @section('content')
 
-  <h1>Tasks</h1>
+  <h3>Name: {{$typology -> name}}</h3>
 
-  <a href="{{route('task-create')}}">New Task</a>
+  <h3>Description: {{$typology -> description}}</h3>
+
+  <h3>Task:</h3>
 
   <ul>
-    @foreach ($tasks as $task)
+
+    @foreach ($typology -> tasks as $task)
 
       <li>
-        <a href="{{route('task-show', $task -> id)}}">
-          {{ $task -> title}}
-        </a>
 
-        <a href="{{route('task-edit', $task -> id)}}">Edit</a>
+        <a href="{{route('task-show', $task -> id)}}">
+          {{$task -> title}}
+        </a>
 
       </li>
 
-
-
     @endforeach
+
   </ul>
 
 @endsection

@@ -16,7 +16,13 @@ class Task extends Model
 
   public function employee(){
 
-    return $this -> belongsTO(Employee::class);
+    return $this -> belongsTo(Employee::class);
+
+  }
+
+  public function typology() {
+
+    return $this -> belongsToMany(Typology::class);
 
   }
 }

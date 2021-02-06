@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
 
         EmployeeSeeder::class,
         TaskSeeder::class,
+        TypologySeeder::class
 
       ]);
     }
