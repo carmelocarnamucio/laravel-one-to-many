@@ -34,11 +34,37 @@
             selected
           @endif
 
-        > {{$employee -> name}} </option>
+        >
+          {{$employee -> name}}
+          {{$employee -> lastname}}
+
+        </option>
 
       @endforeach
 
     </select>
+
+    <br><br>
+
+    <label for="typologies[]">Typologies</label> <br>
+
+      @foreach ($typologies as $typology)
+
+          <input
+            name="typologies[]"
+            type="checkbox"
+            value="{{ $typology -> id }}"
+
+            @if ($task -> typologies -> contains($typology -> id))
+              checked
+            @endif
+          >
+            {{ $typology -> name }}
+    <br>
+
+      @endforeach
+
+    <br><br>
 
     <input type="submit" name="" value="Save">
 

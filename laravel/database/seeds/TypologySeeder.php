@@ -15,7 +15,7 @@ class TypologySeeder extends Seeder
     public function run()
     {
 
-      factory(Typology::class, 50)
+      factory(Typology::class, 30)
           -> create()
           -> each(function($typology) {
               $tasks = Task::inRandomOrder() -> limit(5) -> get();

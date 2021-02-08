@@ -3,9 +3,9 @@
 
 @section('content')
 
-  <h3>Name: {{$typology -> name}}</h3>
+  <h3>Name:</h3> {{$typology -> name}}
 
-  <h3>Description: {{$typology -> description}}</h3>
+  <h3>Description:</h3> {{$typology -> description}}
 
   <h3>Task:</h3>
 

@@ -12,119 +12,164 @@ use App\Typology;
 
 class MainController extends Controller
 {
-    //Task
-    public function taskIndex() {
+  //Task
+  public function taskIndex() {
 
-      $tasks = Task::all();
+    $tasks = Task::all();
 
-      return view('pages.task-index', compact('tasks'));
-    }
+    return view('pages.task-index', compact('tasks'));
+  }
 
-    public function taskShow($id) {
+  public function taskShow($id) {
 
-      $task = Task::findOrFail($id);
+    $task = Task::findOrFail($id);
 
-      return view('pages.task-show', compact('task'));
-    }
+    return view('pages.task-show', compact('task'));
+  }
 
-    public function taskCreate() {
+  public function taskCreate() {
 
-      $employees = Employee::all();
+    $employees = Employee::all();
+    $typologies = Typology::all();
 
-      return view('pages.task-create', compact('employees'));
-    }
+    return view('pages.task-create', compact('employees', 'typologies'));
+  }
 
-    public function taskStore(Request $request) {
+  public function taskStore(Request $request) {
 
-      $task = Task::make($request -> all());
+    $data = $request -> all();
 
-      $employee = Employee::findOrFail($request -> get('employee_id'));
+    $employee = Employee::findOrFail($data['employee_id']);
+    $task = Task::make($request -> all());
+    $task -> employee() -> associate($employee);
+    $task -> save();
 
-      $task -> employee() -> associate($employee);
-      $task -> save();
+    $typologies = Typology::findOrFail($data['typologies']);
+    $task -> typologies() -> attach($typologies);
 
-      return redirect() -> route('task-index');
-    }
+    return redirect() -> route('task-index');
+  }
 
-    public function taskEdit($id) {
+  public function taskEdit($id) {
 
-      $task = Task::findOrFail($id);
+    $task = Task::findOrFail($id);
 
-      $employees = Employee::all();
+    $employees = Employee::all();
+    $typologies = Typology::all();
 
-      return view('pages.task-edit', compact('task', 'employees'));
-    }
+    return view('pages.task-edit', compact('task', 'employees', 'typologies'));
+  }
 
-    public function taskUpdate(Request $request, $id) {
+  public function taskUpdate(Request $request, $id) {
 
-      $task = Task::findOrFail($id);
+    $data = $request -> all();
 
-      $task -> update($request -> all());
+    $employee = Employee::findOrFail($data['employee_id']);
+    $task = Task::findOrFail($id);
+    $task -> update($data);
+    $task -> employee() -> associate($employee);
+    $task -> save();
+    $typologies = Typology::findOrFail($data['typologies']);
+    $task -> typologies() -> sync($typologies);
 
-      $employee = Employee::findOrFail($request -> get('employee_id'));
-      $task -> employee() -> associate($employee);
-      $task -> save();
+    return redirect() -> route('task-index');
+  }
 
-      return redirect() -> route('task-index');
-    }
+  //Employee
+  public function empIndex() {
 
-    //Employee
-    public function empIndex() {
+    $employees = Employee::all();
 
-      $employees = Employee::all();
+    return view('pages.emp-index', compact('employees'));
+  }
 
-      return view('pages.emp-index', compact('employees'));
-    }
+  public function empShow($id) {
 
-    public function empShow($id) {
+    $employee = Employee::findOrFail($id);
 
-      $employee = Employee::findOrFail($id);
+    return view('pages.emp-show', compact('employee'));
+  }
 
-      return view('pages.emp-show', compact('employee'));
-    }
+  public function empCreate() {
 
-    public function empCreate() {
+    return view('pages.emp-create');
+  }
 
-      return view('pages.emp-create');
-    }
+  public function empStore(Request $request) {
 
-    public function empStore(Request $request) {
+    Employee::create($request -> all());
 
-      Employee::create($request -> all());
+    return redirect() -> route('emp-index');
+  }
 
-      return redirect() -> route('emp-index');
-    }
+  public function empEdit($id) {
 
-    public function empEdit($id) {
+    $employee = Employee::findOrFail($id);
 
-      $employee = Employee::findOrFail($id);
+    return view('pages.emp-edit', compact('employee'));
+  }
 
-      return view('pages.emp-edit', compact('employee'));
-    }
+  public function empUpdate(Request $request, $id) {
 
-    public function empUpdate(Request $request, $id) {
+    $employee = Employee::findOrFail($id);
 
-      $employee = Employee::findOrFail($id);
+    $employee -> update($request -> all());
 
-      $employee -> update($request -> all());
+    return redirect() -> route('emp-index');
+  }
 
-      return redirect() -> route('emp-index');
-    }
+  //Typologies
+  public function typoIndex() {
+
+    $typologies = Typology::all();
+
+    return view('pages.typo-index', compact('typologies'));
+  }
+
+  public function typoShow($id) {
+
+    $typology = Typology::findOrFail($id);
+
+    return view('pages.typo-show', compact('typology'));
+  }
+
+  public function typoCreate() {
+
+    $tasks = Task::all();
+
+    return view('pages.typo-create', compact('tasks'));
+  }
+
+  public function typoStore(Request $request) {
+
+    $data = $request -> All();
+
+    $typology = Typology::create($data);
+		$tasks = Task::findOrFail($data['tasks']);
+		$typology -> tasks() -> attach($tasks);
+
+    return redirect() -> route('typo-index');
+  }
+
+  public function typoEdit($id) {
+
+    $typology = Typology::findOrFail($id);
+
+    $tasks = Task::all();
+
+    return view('pages.typo-edit', compact('typology', 'tasks'));
+  }
+
+  public function typoUpdate(Request $request, $id) {
+
+    $data = $request -> All();
+
+    $typology = Typology::findOrFail($id);
+		$typology -> update($data);
+		$tasks = Task::findOrFail($data['tasks']);
+		$typology -> tasks() -> sync($tasks);
 
 
-    //Typologies
-    public function typoIndex() {
-
-      $typologies = Typology::all();
-
-      return view('pages.typo-index', compact('typologies'));
-    }
-
-    public function typoShow($id) {
-
-      $typology = Typology::findOrFail($id);
-
-      return view('pages.typo-show', compact('typology'));
-    }
-
+    return redirect() -> route('typo-index');
+  }
 }

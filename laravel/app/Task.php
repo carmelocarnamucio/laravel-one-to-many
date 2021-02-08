@@ -20,7 +20,7 @@ class Task extends Model
 
   }
 
-  public function typology() {
+  public function typologies() {
 
     return $this -> belongsToMany(Typology::class);
 
