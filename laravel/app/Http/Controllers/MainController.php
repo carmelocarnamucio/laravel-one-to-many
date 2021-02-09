@@ -85,7 +85,15 @@ class MainController extends Controller
     $task -> update($data);
     $task -> employee() -> associate($employee);
     $task -> save();
-    $typologies = Typology::findOrFail($data['typologies']);
+
+    if (array_key_exists('typologies', $data)) {
+
+      $typologies = Typology::findOrFail($data['typologies']);
+
+    } else {
+      $typologies = [];
+    }
+
     $task -> typologies() -> sync($typologies);
 
     return redirect() -> route('task-index');
@@ -116,7 +124,7 @@ class MainController extends Controller
     $data = $request -> All();
 
     Validator::make($data, [
-      'name' => 'required|min:2|max:100',
+      'name' => 'required|max:100',
       'lastname' => 'required|max:100',
       'dateOfBirth' => 'required'
     ]) -> validate();
@@ -138,7 +146,7 @@ class MainController extends Controller
     $data = $request -> All();
 
     Validator::make($data, [
-      'name' => 'required|min:2|max:100',
+      'name' => 'required|max:100',
       'lastname' => 'required|max:100',
       'dateOfBirth' => 'required'
     ]) -> validate();
@@ -177,7 +185,7 @@ class MainController extends Controller
     $data = $request -> All();
 
     Validator::make($data, [
-      'name' => 'required|min:5|max:100',
+      'name' => 'required|max:100',
       'description' => 'required|min:5|max:200'
     ]) -> validate();
 
@@ -204,13 +212,21 @@ class MainController extends Controller
     $data = $request -> All();
 
     Validator::make($data, [
-      'name' => 'required|min:5|max:100',
+      'name' => 'required|max:100',
       'description' => 'required|min:5|max:200'
     ]) -> validate();
 
     $typology = Typology::findOrFail($id);
 		$typology -> update($data);
-		$tasks = Task::findOrFail($data['tasks']);
+
+    if (array_key_exists('tasks', $data)) {
+
+      $tasks = Task::findOrFail($data['tasks']);
+
+    } else {
+      $tasks = [];
+    }
+
 		$typology -> tasks() -> sync($tasks);
 
     return redirect() -> route('typo-index');
