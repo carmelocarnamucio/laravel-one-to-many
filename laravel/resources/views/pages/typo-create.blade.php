@@ -2,6 +2,16 @@
 
 @section('content')
 
+  @if ($errors->any())
+    <div class="alert alert-danger">
+      <ul>
+        @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
+
   <h2>New Typology</h2>
 
   <form action="{{route('typo-store')}}" method="POST">

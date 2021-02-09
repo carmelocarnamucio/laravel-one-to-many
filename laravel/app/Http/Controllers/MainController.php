@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
+
 use App\Task;
 
 use App\Employee;
@@ -39,6 +41,14 @@ class MainController extends Controller
 
     $data = $request -> all();
 
+    Validator::make($data, [
+      'title' => 'required|max:100',
+      'description' => 'required|max:200',
+      'priority' => 'required'
+    ]) -> validate();
+
+    $data = $request -> all();
+
     $employee = Employee::findOrFail($data['employee_id']);
     $task = Task::make($request -> all());
     $task -> employee() -> associate($employee);
@@ -63,6 +73,12 @@ class MainController extends Controller
   public function taskUpdate(Request $request, $id) {
 
     $data = $request -> all();
+
+    Validator::make($data, [
+      'title' => 'required|max:100',
+      'description' => 'required|max:200',
+      'priority' => 'required'
+    ]) -> validate();
 
     $employee = Employee::findOrFail($data['employee_id']);
     $task = Task::findOrFail($id);
@@ -97,6 +113,14 @@ class MainController extends Controller
 
   public function empStore(Request $request) {
 
+    $data = $request -> All();
+
+    Validator::make($data, [
+      'name' => 'required|min:2|max:100',
+      'lastname' => 'required|max:100',
+      'dateOfBirth' => 'required'
+    ]) -> validate();
+
     Employee::create($request -> all());
 
     return redirect() -> route('emp-index');
@@ -110,6 +134,14 @@ class MainController extends Controller
   }
 
   public function empUpdate(Request $request, $id) {
+
+    $data = $request -> All();
+
+    Validator::make($data, [
+      'name' => 'required|min:2|max:100',
+      'lastname' => 'required|max:100',
+      'dateOfBirth' => 'required'
+    ]) -> validate();
 
     $employee = Employee::findOrFail($id);
 
@@ -144,6 +176,13 @@ class MainController extends Controller
 
     $data = $request -> All();
 
+    Validator::make($data, [
+      'name' => 'required|min:5|max:100',
+      'description' => 'required|min:5|max:200'
+    ]) -> validate();
+
+    $data = $request -> All();
+
     $typology = Typology::create($data);
 		$tasks = Task::findOrFail($data['tasks']);
 		$typology -> tasks() -> attach($tasks);
@@ -164,11 +203,15 @@ class MainController extends Controller
 
     $data = $request -> All();
 
+    Validator::make($data, [
+      'name' => 'required|min:5|max:100',
+      'description' => 'required|min:5|max:200'
+    ]) -> validate();
+
     $typology = Typology::findOrFail($id);
 		$typology -> update($data);
 		$tasks = Task::findOrFail($data['tasks']);
 		$typology -> tasks() -> sync($tasks);
-
 
     return redirect() -> route('typo-index');
   }
